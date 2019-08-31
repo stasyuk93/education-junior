@@ -1,0 +1,27 @@
+education_junior_db:
+    image: mysql:5.7
+    container_name: education_junior_db
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: education_junior
+        MYSQL_USER: root
+        MYSQL_PASSWORD: root
+    command: mysqld --sql_mode="STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION" --disable-partition-engine-check
+
+education_junior_php:
+    build: docker/php
+    restart: always
+    container_name: education_junior_php
+    links:
+        - education_junior_db
+    volumes:
+        - ./:/var/www/education-junior
+
+education_junior_nginx:
+    build: docker/nginx
+    restart: always
+    container_name: education_junior_nginx
+    links:
+        - education_junior_php
+    volumes_from:
+        - education_junior_php
