@@ -9,7 +9,15 @@
 namespace App\Models\Employee;
 
 
-class TeamLead
+class TeamLead extends Employee
 {
+    public function task()
+    {
+        return $this->hasMany(\App\Models\Task::class,'employee_id','id');
+    }
 
+    public function condition()
+    {
+        return $this->hasOne(\App\Models\ConditionEmployee::class, 'employee_id','id');
+    }
 }

@@ -19,8 +19,9 @@ class CreateEmployeeTasksTable extends Migration
             $table->bigInteger('task_id');
             $table->boolean('is_review')->default(0);
             $table->boolean('is_complete')->default(0);
+            $table->bigInteger('criteria_id')->nullable();
             $table->dateTime('start_date');
-            $table->dateTime('end_date');
+            $table->dateTime('end_date')->nullable();
         });
     }
 
