@@ -9,7 +9,15 @@
 namespace App\Models\Employee;
 
 
-class Junior
+class Junior extends Employee
 {
+    public static function getAll()
+    {
+        return self::where('position_id',1)->get();
+    }
 
+    public static function searchByName($name)
+    {
+        return self::where('name','LIKE',"%$name%")->get();
+    }
 }

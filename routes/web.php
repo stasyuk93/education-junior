@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,7 +9,28 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('ajax/search-junior','JuniorController@search');
+Route::get('ajax/search-condition','TeamLeadController@searchCondition');
+Route::post('ajax/is-complete-task','EmployeeTaskController@updateIsComplete');
+Route::post('ajax/set-condition-employee','TeamLeadController@setCondition');
+
+Route::get('/', 'HomeController@index');
+
+Route::group(['prefix' => 'team-lead/{account_id}', 'as' => 'team-lead.'], function(){
+    Route::get('','TeamLeadController@index');
+    Route::resource('task','TaskController');
+
+    Route::group(['prefix' => 'task/{task_id}'], function(){
+        Route::get('implementer/{employee_task_id}','TeamLeadController@getImplementer')->name('implementer');
+        Route::resource('delegate-task','EmployeeTaskController');
+        Route::post('update-criteria-task','EmployeeTaskController@updateCriteria')->name('update-criteria');
+    });
+
 });
+
+
+Route::get('junior/{junior_id}','JuniorController@index')->name('junior');
+
+Route::get('manager/{manager_id}', 'ManagerController@index')->name('manager');
