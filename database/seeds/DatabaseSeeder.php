@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MessageConditionChange::class);
         $this->call(TaskSeeder::class);
         $this->call(TaskEmployeeSeeder::class);
+        $this->call(ConditionEmployee::class);
     }
 }
