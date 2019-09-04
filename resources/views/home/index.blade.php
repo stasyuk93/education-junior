@@ -2,6 +2,7 @@
 
 @section('content')
     <h4>Список сущностей</h4>
+    <a class="btn btn-primary" href="{{route('employee.create')}}">Создать новую сущность</a>
     <ul>
         @foreach($employees as $employee)
             <li>
