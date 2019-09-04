@@ -19,4 +19,9 @@ class EmployeeTask extends Model
     {
         return $this->belongsTo(Employee\Junior::class);
     }
+
+    public function influences()
+    {
+        return $this->hasMany(InfluenceChangeCondition::class);
+    }
 }

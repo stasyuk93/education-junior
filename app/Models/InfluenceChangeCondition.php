@@ -10,20 +10,22 @@ class InfluenceChangeCondition extends Model
 {
     public $fillable = [
         'listener_employee_id',
-        'employee_id',
+        'employee_task_id',
+        'condition_change_criteria_id',
     ];
 
-    public function employee()
+    public function employeeTask()
     {
-        return $this->belongsTo(\App\Models\Employee\Employee::class);
+        return $this->belongsTo(\App\Models\EmployeeTask::class);
     }
 
     public static function getByListenerEmployee($listener_employee)
     {
         return self::query()
             ->select(['*', DB::raw('COUNT(*) as count')])
-            ->with('employee')
-            ->with('employee.position')
+            ->with('employeeTask')
+            ->with('employeeTask.employee')
+            ->with('employeeTask.employee.position')
             ->where('listener_employee_id', $listener_employee)
             ->groupBy('listener_employee_id')
             ->get();
@@ -32,5 +34,10 @@ class InfluenceChangeCondition extends Model
     public function listenerEmployee()
     {
         return $this->belongsTo(ListenerEmployee::class);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(MessageConditionChange::class, 'condition_change_criteria_id', 'condition_change_criteria_id');
     }
 }

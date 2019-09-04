@@ -15,8 +15,8 @@
         <tbody>
         @foreach($influence as $item)
             <tr>
-                <td>{{$item->employee->name}}</td>
-                <td>{{$item->employee->position->name}}</td>
+                <td>{{$item->employeeTask->employee->name}}</td>
+                <td>{{$item->employeeTask->employee->position->name}}</td>
                 <td>{{$item->count}}</td>
             </tr>
         @endforeach

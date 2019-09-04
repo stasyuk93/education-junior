@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee\Junior;
 use Illuminate\Http\Request;
-use App\Models\EmployeeTask;
 
 class JuniorController extends Controller
 {
@@ -16,9 +15,8 @@ class JuniorController extends Controller
 
     public function index($id)
     {
-        $junior = Junior::findOrFail($id);
-
-//        $tasks = EmployeeTask::where('');
-
+        $junior = Junior::with('employeeTask')->with('employeeTask.task')->findOrFail($id);
+        return view('junior.index', ['junior' => $junior]);
     }
+
 }

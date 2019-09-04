@@ -16,7 +16,8 @@ class CreateInfluenceChangeConditionsTable extends Migration
         Schema::create('influence_change_conditions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('listener_employee_id');
-            $table->bigInteger('employee_id');
+            $table->bigInteger('employee_task_id');
+            $table->bigInteger('condition_change_criteria_id');
             $table->timestamps();
         });
     }
