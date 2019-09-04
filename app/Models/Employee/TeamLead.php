@@ -20,4 +20,9 @@ class TeamLead extends Employee
     {
         return $this->hasOne(\App\Models\ConditionEmployee::class, 'employee_id','id');
     }
+
+    public static function getAll()
+    {
+        return self::where('position_id', 4)->get();
+    }
 }

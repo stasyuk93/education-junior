@@ -1,6 +1,7 @@
 @extends('app')
 
 @section('content')
+    <h4>Список сущностей</h4>
     <ul>
         @foreach($employees as $employee)
             <li>

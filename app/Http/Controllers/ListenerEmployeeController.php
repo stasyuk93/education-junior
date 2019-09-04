@@ -4,10 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\EmployeeTask;
+use App\Models\ListenerCondition;
+use App\Models\ListenerEmployee;
+use App\Models\Employee\TeamLead;
 
-class EmployeeTaskController extends Controller
+class ListenerEmployeeController extends Controller
 {
+
+    public function subscribeList(Request $request)
+    {
+        if(!$request->has(['who_listen','whom_listen'])) return response('Bad request',400);
+        $listeners = ListenerEmployee::query()->where('who_listen', $request->get('who_listen'))
+            ->where('whom_listen', $request->get('whom_listen'))
+            ->with('listenerCondition')
+            ->get();
+        return view('listener_employee.show_events', ['listeners' => $listeners, 'employee_id' => $request->get('who_listen')]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +28,6 @@ class EmployeeTaskController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**
@@ -23,9 +35,13 @@ class EmployeeTaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('employee_task.create');
+        return view('listener_employee.create', [
+            'conditions' => ListenerCondition::all(),
+            'employee_id' => $request->get('employee_id'),
+            'leads' => TeamLead::getAll()
+        ]);
     }
 
     /**
@@ -36,11 +52,13 @@ class EmployeeTaskController extends Controller
      */
     public function store(Request $request)
     {
-        $delegate = new EmployeeTask();
-        $delegate->task_id = $request->get('task_id');
-        $delegate->employee_id = $request->get('junior_id');
-        $delegate->save();
-        return redirect()->route('team-lead.task.show', [$request->route('account_id'), $request->route('task_id')]);
+        $listener = new ListenerEmployee();
+        $listener->who_listen = $request->who_listen;
+        $listener->whom_listen = $request->whom_listen;
+        $listener->listener_condition_id = $request->listener_condition_id;
+        $listener->save();
+
+        return redirect()->route('manager',$request->get('employee_id'));
     }
 
     /**
@@ -86,29 +104,5 @@ class EmployeeTaskController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function updateIsReview()
-    {
-
-    }
-
-    public function updateIsComplete(Request $request)
-    {
-        $task = EmployeeTask::findOrFail($request->get('id'));
-        $task->criteria_id = $request->get('is_complete');
-        $task->save();
-    }
-
-    public function updateCriteria(Request $request)
-    {
-        $task = EmployeeTask::findOrFail($request->get('id'));
-        $task->criteria_id = $request->get('criteria');
-        $task->save();
-        event(new \App\Events\UpdateCriteriaTask($task, $request->route('account_id')));
-        return redirect()->route('team-lead.task.show', [
-            'account_id' => $request->route('account_id'),
-            'task_id' => $request->route('task_id'),
-        ]);
     }
 }

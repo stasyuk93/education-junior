@@ -34,3 +34,12 @@ Route::group(['prefix' => 'team-lead/{account_id}', 'as' => 'team-lead.'], funct
 Route::get('junior/{junior_id}','JuniorController@index')->name('junior');
 
 Route::get('manager/{manager_id}', 'ManagerController@index')->name('manager');
+
+Route::resource('listener-condition','ListenerConditionController');
+
+Route::get('listener-employee/subscribe-list','ListenerEmployeeController@subscribeList')->name('subscribe-list');
+
+Route::get('influence-change-condition/{event}', 'InfluenceChangeConditionController@index')->name('influence');
+
+Route::resource('listener-employee','ListenerEmployeeController');
+

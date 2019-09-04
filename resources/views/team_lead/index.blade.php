@@ -5,9 +5,9 @@
         <div class="form-group">
             <label for="condition">Настроение</label>
             <select id="condition" name="condition" class="selectpicker" data-live-search="true">
-                @if($teamLead->condition)
-                    <option value="{{$teamLead->condition->condition_id}}">{{$teamLead->condition->condition->name}}</option>
-                @endif
+                @foreach($conditions as $condition)
+                    <option @if($teamLead->condition && ($teamLead->condition->condition_id == $condition->id)) selected @endif value="{{$condition->id}}">{{$condition->name}}</option>
+                @endforeach
             </select>
         </div>
     </div>
@@ -22,34 +22,7 @@
     <script>
         $('#condition').selectpicker({
             liveSearch: true
-        })
-            .ajaxSelectPicker({
-                ajax: {
-                    url: '/ajax/search-condition',
-                    method: 'GET',
-                    data: {
-                        @verbatim
-                        q: '{{{q}}}'
-                        @endverbatim
-                    }
-                },
-                cache: false,
-                clearOnEmpty: true,
-                preserveSelected: true,
-                preprocessData: function(response){
-                    var data = [];
-                    $(response).each(function () {
-                        data.push(
-                            {
-                                value: this.id,
-                                text: this.name
-                            }
-                        );
-                    });
-
-                    return data;
-                }
-            });
+        });
         $('#condition').change(function(){
             var id = $(this).val();
             if(!id) return;
