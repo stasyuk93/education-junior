@@ -34,6 +34,8 @@ Route::group(['prefix' => 'team-lead/{account_id}', 'as' => 'team-lead.'], funct
 
 Route::get('junior/{junior_id}','JuniorController@index')->name('junior');
 Route::get('task-junior/{employee_task_id}','EmployeeTaskController@showTaskByJunior')->name('task-junior');
+Route::get('task-junior/{employee_task_id}/answer', 'EmployeeTaskController@answerForm')->name('answer-task');
+Route::post('task-junior/{employee_task_id}/answer', 'EmployeeTaskController@answer')->name('answer-task.store');
 
 Route::get('manager/{manager_id}', 'ManagerController@index')->name('manager');
 

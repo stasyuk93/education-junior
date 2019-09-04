@@ -20,6 +20,19 @@ class EmployeeTaskController extends Controller
         ]);
     }
 
+    public function answerForm($employee_task_id)
+    {
+        return view('employee_task.answer', ['employee_task' => EmployeeTask::findOrFail($employee_task_id)]);
+    }
+
+    public function answer(Request $request, $employee_task_id)
+    {
+        $task = EmployeeTask::findOrFail($employee_task_id);
+        $task->answer = $request->get('answer');
+        $task->save();
+        return redirect()->route('task-junior', $task->employee_id);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -98,18 +111,6 @@ class EmployeeTaskController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function updateIsReview()
-    {
-
-    }
-
-    public function updateIsComplete(Request $request)
-    {
-        $task = EmployeeTask::findOrFail($request->get('id'));
-        $task->criteria_id = $request->get('is_complete');
-        $task->save();
     }
 
     public function updateCriteria(Request $request)
