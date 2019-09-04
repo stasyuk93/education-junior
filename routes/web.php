@@ -45,3 +45,4 @@ Route::get('influence-change-condition/{event}', 'InfluenceChangeConditionContro
 
 Route::resource('listener-employee','ListenerEmployeeController');
 
+Route::resource('employee','EmployeeController');
