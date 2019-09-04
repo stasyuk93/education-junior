@@ -2,6 +2,7 @@
 
 @section('content')
     <div>
+        <a class="btn btn-primary" href="{{route('team-lead.condition.create',$teamLead->id)}}">Добавить новое состояние</a>
         <div class="form-group">
             <label for="condition">Настроение</label>
             <select id="condition" name="condition" class="selectpicker" data-live-search="true">
