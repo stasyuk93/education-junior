@@ -21,6 +21,7 @@ Route::get('/', 'HomeController@index');
 Route::group(['prefix' => 'team-lead/{account_id}', 'as' => 'team-lead.'], function(){
     Route::get('','TeamLeadController@index');
     Route::resource('task','TaskController');
+    Route::resource('condition','ConditionController');
 
     Route::group(['prefix' => 'task/{task_id}'], function(){
         Route::get('implementer/{employee_task_id}','TeamLeadController@getImplementer')->name('implementer');
