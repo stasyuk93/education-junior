@@ -15,6 +15,7 @@
 </head>
 <body>
 <div class="container">
+    <a class="btn btn-outline-success" href="/">Главная</a>
     @yield('content')
 </div>
 

@@ -1,13 +1,13 @@
 @extends('app')
 @section('content')
-    <form method="post" action="{{route('delegate-task.store',[request()->route('account_id'),request()->route('task_id')])}}">
+    <form method="post" action="{{route('team-lead.delegate-task.store',[request()->route('account_id'),request()->route('task_id')])}}">
         {{csrf_field()}}
         <input type="hidden" name="task_id" value="{{request()->route('task_id')}}">
         <div class="form-group">
-            <select name="junior_id" class="selectpicker" data-live-search="true">
+            <select name="junior_id" class="selectpicker form-control" data-live-search="true">
             </select>
         </div>
-        <button type="submit">Save</button>
+        <button class="btn btn-success" type="submit">Сохранить</button>
     </form>
 @endsection()
 @section('style')

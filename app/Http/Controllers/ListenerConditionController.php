@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Condition;
+use App\Models\Criteria;
+use App\Models\ListenerCondition;
 
-use App\Models\EmployeeTask;
-
-class EmployeeTaskController extends Controller
+class ListenerConditionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,9 +24,13 @@ class EmployeeTaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('employee_task.create');
+        return view('listener_condition.create', [
+            'conditions' => Condition::all(),
+            'criterias' => Criteria::all(),
+            'employee_id' => $request->get('employee_id')
+        ]);
     }
 
     /**
@@ -36,11 +41,12 @@ class EmployeeTaskController extends Controller
      */
     public function store(Request $request)
     {
-        $delegate = new EmployeeTask();
-        $delegate->task_id = $request->get('task_id');
-        $delegate->employee_id = $request->get('junior_id');
-        $delegate->save();
-        return redirect()->route('team-lead.task.show', [$request->route('account_id'), $request->route('task_id')]);
+        $condition = new ListenerCondition();
+        $condition->title = $request->title;
+        $condition->condition_id = $request->condition_id;
+        $condition->criteria_id = $request->criteria_id;
+        $condition->save();
+        return redirect()->route('manager',$request->get('employee_id'));
     }
 
     /**
@@ -86,29 +92,5 @@ class EmployeeTaskController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function updateIsReview()
-    {
-
-    }
-
-    public function updateIsComplete(Request $request)
-    {
-        $task = EmployeeTask::findOrFail($request->get('id'));
-        $task->criteria_id = $request->get('is_complete');
-        $task->save();
-    }
-
-    public function updateCriteria(Request $request)
-    {
-        $task = EmployeeTask::findOrFail($request->get('id'));
-        $task->criteria_id = $request->get('criteria');
-        $task->save();
-        event(new \App\Events\UpdateCriteriaTask($task, $request->route('account_id')));
-        return redirect()->route('team-lead.task.show', [
-            'account_id' => $request->route('account_id'),
-            'task_id' => $request->route('task_id'),
-        ]);
     }
 }

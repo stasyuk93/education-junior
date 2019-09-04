@@ -14,8 +14,10 @@ class TeamLeadController extends Controller
 {
     public function index($id)
     {
-        $teamLead = TeamLead::findOrFail($id);
-        return view('team_lead.index',['teamLead' => $teamLead]);
+        return view('team_lead.index',[
+            'teamLead' => TeamLead::findOrFail($id),
+            'conditions' => Condition::all()
+        ]);
     }
 
     public function getImplementer(Request $request)
