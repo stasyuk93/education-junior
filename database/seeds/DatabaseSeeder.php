@@ -19,5 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(listenerConditionsSeeder::class);
         $this->call(listenerEmployeesSeeder::class);
         $this->call(MessageConditionChange::class);
+        $this->call(TaskSeeder::class);
+        $this->call(TaskEmployeeSeeder::class);
     }
 }
