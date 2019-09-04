@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\UpdateCriteriaTask;
+use Carbon\Carbon;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\ListenerEmployee;
@@ -44,19 +45,24 @@ class EmployeeListener
                 ->where('criteria_id',$event->employeeTask->criteria_id)
                 ->where('listener_conditions.condition_id', $conditionEmployee->condition_id)
                 ->get();
+
+            $changedCondition = ConditionChangeCriteria::where('condition_id', $conditionEmployee->condition_id)
+                ->where('criteria_id', $event->employeeTask->criteria_id)
+                ->first();
             if($listener) {
                 $data = [];
                 foreach ($listener as $val){
                     $data[] = [
                         'listener_employee_id' => $val->id,
-                        'employee_id' => $event->employeeTask->employee_id,
+                        'employee_task_id' => $event->employeeTask->id,
+                        'condition_change_criteria_id' => $changedCondition->id,
+                        'created_at' => Carbon::now('Europe/Kiev')->format('Y-m-d H:i:s'),
                     ];
                 }
+
                 InfluenceChangeCondition::query()->insert($data);
             }
-            $changedCondition = ConditionChangeCriteria::where('condition_id', $conditionEmployee->condition_id)
-                ->where('criteria_id', $event->employeeTask->criteria_id)
-                ->first();
+
             $conditionEmployee->condition_id = $changedCondition->change_condition_id;
             $conditionEmployee->save();
         }

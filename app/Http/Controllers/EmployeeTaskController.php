@@ -8,6 +8,18 @@ use App\Models\EmployeeTask;
 
 class EmployeeTaskController extends Controller
 {
+
+    public function showTaskByJunior($id)
+    {
+        return view('task.junior.show', [
+            'task' => EmployeeTask::with('task')
+                ->with('influences')
+                ->with('influences.messages')
+                ->findOrFail($id),
+
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -32,4 +32,6 @@ class TaskController extends Controller
         $task->save();
         return redirect()->route('team-lead.tasks', $request->segment(2));
     }
+
+
 }

@@ -20,4 +20,9 @@ class Junior extends Employee
     {
         return self::where('name','LIKE',"%$name%")->get();
     }
+
+    public function employeeTask()
+    {
+        return $this->hasMany(\App\Models\EmployeeTask::class, 'employee_id', 'id');
+    }
 }
