@@ -1,5 +1,5 @@
 Tutorial:
-1) clone repository;
+1) clone repository and rename .env.example to .env
 2) run command in folder project sudo docker-compose up -d --build;
 3) run command sudo docker-compose up -d;
 4) run command sudo docker exec -it education_junior_php bash;
